@@ -3,6 +3,10 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
+const authRouter = require('./auth/auth-router');
+const usersRouter = require('./users/user-router');
+const cookbookRouter = require('./cookbooks/cookbook-router');
+const recipesRouter = require('./recipes/recipes-router');
 
 const { NODE_ENV } = require('./config');
 
@@ -16,11 +20,10 @@ app.use(morgan(morganOptions));
 app.use(helmet());
 app.use(cors());
 
-app.get('/', (req,res) => {
-  res.send('Hello World');
-});
-
-
+app.use('/api/auth', authRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/cookbooks', cookbookRouter);
+app.use('/api/recipes', recipesRouter);
 
 app.use(function errorHandler(error, req, res, next) { //eslint-disable-line no-unused-vars
   let response;
