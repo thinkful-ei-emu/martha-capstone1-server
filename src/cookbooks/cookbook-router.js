@@ -61,6 +61,26 @@ cookbookRouter
         res.status(204).end();
       })
       .catch(next);
+  })
+  .patch(jsonParser, (req, res) => {
+    const { title, recipes } = req.body;
+    const cookbookToUpdate = { title, recipes };
+
+    const numberOfValues = Object.values(cookbookToUpdate).filter(Boolean).length;
+    if(numberOfValues === 0){
+      return res.status(400).json({
+        error: { message: 'Request body must contain either a title or recipes'}
+      });
+    }
+
+    CookbookService.updateCookbook(
+      req.app.get('db'),
+      req.params.cookbook_id,
+      cookbookToUpdate
+    )
+      .then(rowsAffected => {
+        res.status(204).end();
+      });
   });
 
 module.exports = cookbookRouter;

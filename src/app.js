@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const authRouter = require('./auth/auth-router');
-const usersRouter = require('./users/user-router');
+const userRouter = require('./users/user-router');
 const cookbookRouter = require('./cookbooks/cookbook-router');
 const recipesRouter = require('./recipes/recipes-router');
 
@@ -21,7 +21,7 @@ app.use(helmet());
 app.use(cors());
 
 app.use('/api/auth', authRouter);
-app.use('/api/users', usersRouter);
+app.use('/api/users', userRouter);
 app.use('/api/cookbooks', cookbookRouter);
 app.use('/api/recipes', recipesRouter);
 

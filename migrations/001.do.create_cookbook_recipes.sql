@@ -8,7 +8,7 @@ CREATE TABLE cookbook_recipes (
   instruction  text[]
 );
 
-CREATE TYPE meal_type as ENUM(
+CREATE TYPE food as ENUM(
   'breakfast', 
   'lunch', 
   'dinner', 
@@ -18,9 +18,9 @@ CREATE TYPE meal_type as ENUM(
 );
 
 ALTER TABLE cookbook_recipes 
-  ADD COLUMN meal_type meal_type;
+  ADD COLUMN meal_type food;
 
-CREATE TYPE difficulty as ENUM(
+CREATE TYPE diffi as ENUM(
   'beginner',
   'intermediate',
   'advanced',
@@ -28,4 +28,4 @@ CREATE TYPE difficulty as ENUM(
 );
 
 ALTER TABLE cookbook_recipes
-  ADD COLUMN difficulty difficulty
+  ADD COLUMN difficulty diffi

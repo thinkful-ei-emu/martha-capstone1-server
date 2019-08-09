@@ -7,12 +7,8 @@ CREATE TABLE cookbook_users (
   date_modified TIMESTAMP
 );
 
-ALTER TABLE cookbook_recipes
+ALTER TABLE cookbooks
   ADD COLUMN
     user_id INTEGER REFERENCES cookbook_users(id)
     ON DELETE SET NULL;
 
-ALTER TABLE cookbook_recipes
-  ADD COLUMN 
-    cookbook_id INTEGER REFERENCES cookbooks(id)
-    ON DELETE SET NULL;

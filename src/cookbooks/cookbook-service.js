@@ -24,14 +24,12 @@ const CookbookService= {
     return knex('cookbooks')
       .where({id})
       .delete();
+  },
+  updateCookbook(knex, id, newCookbookFields){
+    return knex('cookbooks')
+      .where({id})
+      .update(newCookbookFields);
   }
-  
-  // ,
-  // updateNote(knex, id, newNoteFields){
-  //   return knex('notes')
-  //     .where({id})
-  //     .update(newNoteFields);
-  // }
 };
 
 module.exports = CookbookService;
