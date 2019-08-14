@@ -52,6 +52,11 @@ cookbookRouter
       })
       .catch(next);
   })
+  .get((req, res) => {
+    CookbookService.getCookbookRecipes(req.app.get('db'),
+      req.params.cookbook_id)
+      .then(cookbook => res.json(cookbook));
+  })
   .delete((req,res, next) => {
     CookbookService.deleteCookbook(
       req.app.get('db'),
@@ -63,16 +68,14 @@ cookbookRouter
       .catch(next);
   })
   .patch(jsonParser, (req, res) => {
-    const { title, recipes } = req.body;
-    const cookbookToUpdate = { title, recipes };
-
+    const { recipes } = req.body;
+    const cookbookToUpdate = { recipes };
     const numberOfValues = Object.values(cookbookToUpdate).filter(Boolean).length;
     if(numberOfValues === 0){
       return res.status(400).json({
         error: { message: 'Request body must contain either a title or recipes'}
       });
     }
-
     CookbookService.updateCookbook(
       req.app.get('db'),
       req.params.cookbook_id,

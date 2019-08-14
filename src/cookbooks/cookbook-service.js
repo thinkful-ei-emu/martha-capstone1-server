@@ -29,6 +29,12 @@ const CookbookService= {
     return knex('cookbooks')
       .where({id})
       .update(newCookbookFields);
+  },
+  getCookbookRecipes(knex, id){
+    return knex
+      .from('cookbooks')
+      .select(knex.raw('recipes'))
+      .where('id', id);
   }
 };
 
