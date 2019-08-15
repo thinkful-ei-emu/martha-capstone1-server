@@ -9,4 +9,4 @@ module.exports = {
   'username': process.env.PROD_MIGRATION_DB_USER,
   'password': process.env.PROD_MIGRATION_DB_PASS,
   'ssl': true
-}
+};
