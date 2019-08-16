@@ -5,11 +5,7 @@ const helpers = require('./test-helpers');
 describe.skip('Recipes Endpoints', function() {
   let db; 
 
-  const { 
-    testUsers, 
-    testRecipes,
-    testCookbooks
-  } = helpers.makeCookbookFixtures();
+  const { testRecipes } = helpers.makeCookbookFixtures();
 
   before('make knex instance', () => {
     db=knex({
@@ -18,21 +14,11 @@ describe.skip('Recipes Endpoints', function() {
     });
     app.set('db', db);
   });
-
   after('disconnect from db', () => db.destroy());
   before('cleanup', () => helpers.cleanTables(db));
   afterEach('cleanup', () => helpers.cleanTables(db));  
 
   describe('GET /api/recipes',  () => {
-    context('Given no recipes', () => {
-      it('responds with 200 and an empty list', ()=> {
-        return supertest(app)
-          .get('/api/recipes')
-          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-          .expect(200, []);
-      });
-    });
-
     context('Given there are recipes', ()=> {
       beforeEach('insert recipes', () => {
         return db 
@@ -41,16 +27,19 @@ describe.skip('Recipes Endpoints', function() {
       });
 
       it('responds with 200 and whole list', ()=> {
-        const expectedRecipes = testRecipes;
         return supertest(app)
           .get('/api/recipes')
-          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-          .expect(200, expectedRecipes);
+          .expect(200, testRecipes);
       });
     });
   });
 
   describe('POST /api/recipes', () => {
+    beforeEach('insert recipes', () => {
+      return db 
+        .into('cookbook_recipes')
+        .insert(testRecipes);
+    });
     it('should create a recipe and respond with 201', ()=> {
       const newRecipe = {
         title: 'test',
@@ -64,7 +53,6 @@ describe.skip('Recipes Endpoints', function() {
       };
       return supertest(app)
         .post('/api/recipes')
-        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
         .send(newRecipe)
         .expect(201);
     });

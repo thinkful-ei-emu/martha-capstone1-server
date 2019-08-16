@@ -37,76 +37,26 @@ function makeRecipesArray() {
   return [
     {
         id: 1,
-        title: "apple",
-        author: "Me",
+        title: 'apple',
+        author: 'Me',
         serving_size: 1,
         cook_time: 1,
-        ingredients: [
-            "apple"
-        ],
-        instruction: [
-            "bite into apple"
-        ],
-        meal_type: "breakfast",
-        difficulty: "beginner"
+        ingredients: ['apple'],
+        instruction: ['bite into apple'],
+        meal_type: 'breakfast',
+        difficulty: 'beginner'
     },
     {
         id: 2,
-        title: "banana",
-        author: "",
+        title: 'banana',
+        author: '',
         serving_size: 1,
         cook_time: 1,
-        ingredients: [
-            "banana"
-        ],
-        instruction: [
-            "peel back outer skin",
-            "eat"
-        ],
-        meal_type: "breakfast",
-        difficulty: "beginner"
+        ingredients: ['banana'],
+        instruction: ['peel back outer skin', 'eat'],
+        meal_type: 'breakfast',
+        difficulty: 'beginner'
     },
-    {
-        id: 10,
-        title: "test",
-        author: "test",
-        serving_size: 1,
-        cook_time: 1,
-        ingredients: [
-            "apple",
-            "banana"
-        ],
-        instruction: [
-            "cook",
-            "eat"
-        ],
-        meal_type: "dinner",
-        difficulty: "professional"
-    },
-    {
-        id: 21,
-        title: "BLT Sandwich",
-        author: "meeko",
-        serving_size: 1,
-        cook_time: 30,
-        ingredients: [
-            "bacon",
-            "lettuce",
-            "tomato",
-            "bread",
-            "mayo"
-        ],
-        instruction: [
-            "toast bread",
-            "cook bacon in pan over medium heat",
-            "slice 1 tomato",
-            "rinse lettuce",
-            "spread mayo on bread ",
-            "assemble sandwich with all ingredients inside toasted bread"
-        ],
-        meal_type: "lunch",
-        difficulty: "beginner"
-    }
 ]
 }
 
@@ -132,7 +82,9 @@ function seedUsers(db, users){
     ...user, 
     password: bcrypt.hashSync(user.password, 1)
   }))
-  return db.into('cookbook_users').insert(pepperedUsers)
+  return db
+    .into('cookbook_users')
+    .insert(pepperedUsers)
     .then(()=> 
     db.raw(
       `SELECT setval('cookbook_users_id_seq', ?)`,

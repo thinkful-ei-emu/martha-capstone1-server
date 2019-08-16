@@ -30,7 +30,6 @@ describe('Cookbook Endpoints', function () {
       it('responds with 200 and empty list', () => {
         return supertest(app)
           .get('/api/cookbooks')
-          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
           .expect(200, []);
       });
     });
@@ -48,7 +47,6 @@ describe('Cookbook Endpoints', function () {
         const expectedCookbooks = testCookbooks;
         return supertest(app)
           .get('/api/cookbooks')
-          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
           .expect(200, expectedCookbooks);
       });
     });
@@ -62,7 +60,6 @@ describe('Cookbook Endpoints', function () {
       };
       return supertest(app)
         .post('/api/cookbooks')
-        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
         .send(newCookbook)
         .expect(201);
     });
@@ -81,19 +78,24 @@ describe('Cookbook Endpoints', function () {
       });
     });
 
-    context('Given the cookbook does exist', ()=> {
-      beforeEach('insert cookbooks', ()=> 
+    context('Given there are cookbooks', () => {
+      beforeEach('insert cookbooks', () =>
         helpers.seedCookbooksTables(
-          db, testUsers, testCookbooks
-        ));
-      it.skip('responds with 200 and the cookbook', ()=> {
-        const cookbookId = 2;
-        const expectedCookbook = testCookbooks[1];
+          db,
+          testUsers,
+          testCookbooks
+        )
+      );
 
+      it.skip('responds with 200 and whole list', () => {
+        const cookbookId=1;
+        const expectedCookbooks = {
+          id: 1, 
+          title: 'Test 1',
+        };
         return supertest(app)
           .get(`/api/cookbooks/${cookbookId}`)
-          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-          .expect(200, expectedCookbook);
+          .expect(200, expectedCookbooks);
       });
     });
   });
@@ -123,7 +125,12 @@ describe('Cookbook Endpoints', function () {
     beforeEach('insert cookbooks', ()=> {
       return db
         .into('cookbooks')
-        .insert(testCookbooks);
+        .insert(testCookbooks)
+        .then(() => {
+          return db
+            .into('cookook_recipes')
+            .insert(testRecipes)
+        })
     });
     it.skip(`responds with 204 when updating field`, () => {
       const idToUpdate = 2
