@@ -53,4 +53,100 @@ describe('Cookbook Endpoints', function () {
       });
     });
   });
+
+  describe('POST /api/cookbooks', () => {
+    it('should create a cookbook and respond with 201', ()=> {
+      const newCookbook = {
+        title: 'test cookbook',
+        recipes: [1, 2],
+      };
+      return supertest(app)
+        .post('/api/cookbooks')
+        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+        .send(newCookbook)
+        .expect(201);
+    });
+  });
+
+  describe('GET /api/cookbooks/:cookbook_id', ()=> {
+    context('Given no cookbooks', ()=> {
+      beforeEach(()=> helpers.seedUsers(db, testUsers));
+
+      it('responds with 404 when coookbook does not exist', ()=> {
+        const cookbookId= 123456;
+        return supertest(app)
+          .get(`/api/cookbooks/${cookbookId}`)
+          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+          .expect(404, {error:{ message: 'Cookbook does not exist'}});
+      });
+    });
+
+    context('Given the cookbook does exist', ()=> {
+      beforeEach('insert cookbooks', ()=> 
+        helpers.seedCookbooksTables(
+          db, testUsers, testCookbooks
+        ));
+      it.skip('responds with 200 and the cookbook', ()=> {
+        const cookbookId = 2;
+        const expectedCookbook = testCookbooks[1];
+
+        return supertest(app)
+          .get(`/api/cookbooks/${cookbookId}`)
+          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+          .expect(200, expectedCookbook);
+      });
+    });
+  });
+
+  describe('DELETE /api/cookbooks/:cookbook_id', ()=> {
+    beforeEach('insert cookbooks', () => {
+      return db
+        .into('cookbooks')
+        .insert(testCookbooks);
+    });
+
+    it('responds with 204 and removes the notes', () => {
+      const idToRemove = 1;
+      const expectedCookbooks = testCookbooks.filter(cookbook => cookbook.id !== idToRemove);
+      return supertest(app)
+        .delete(`/api/cookbooks/${idToRemove}`)
+        .expect(204)
+        .then(() =>
+          supertest(app)
+            .get('/api/cookbooks')
+            .expect(expectedCookbooks)
+        );
+    });
+  });
+
+  describe('PATCH /api/cookbooks/:cookbook_id', ()=> {
+    beforeEach('insert cookbooks', ()=> {
+      return db
+        .into('cookbooks')
+        .insert(testCookbooks);
+    });
+    it.skip(`responds with 204 when updating field`, () => {
+      const idToUpdate = 2
+      const updateCookbook = {
+        title: 'updated cookbook title',
+      }
+      const expectedCookbook = {
+        ...testCookbooks[idToUpdate - 1],
+        ...updateCookbook
+      }
+
+      return supertest(app)
+        .patch(`/api/cookbooks/${idToUpdate}`)
+        .send({
+          ...updateCookbook,
+          fieldToIgnore: 'should not be in GET response'
+        })
+        .expect(204)
+        .then(res =>
+          supertest(app)
+            .get(`/api/cookbooks/${idToUpdate}`)
+            .expect(expectedCookbook)
+        )
+    });
+  });
 });
