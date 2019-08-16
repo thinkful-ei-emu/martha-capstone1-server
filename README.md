@@ -1,26 +1,51 @@
-# Express Boilerplate!
+#Application Title: MyCookbook App
 
-This is a boilerplate project used for starting new projects!
+Link to live application: https://my-cookbook-app.maplantz89.now.sh/
 
-## Set up
+##API Documentation
+Routes within this Application:
+1. /api/cookbooks
+  GET request: allows client to recieve an array of cookbook objects
+  POST request: allows client to create a new cookbook and add it to the database
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+2. /api/recipes
+  GET request: allows client to recieve an array of recipe objects
+  POST request: allows client to create a new recipe and add it to the database
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+3. /api/cookbooks/:cookbook_id
+  GET request: allows client to recieve an individual cookbook
+  DELETE request: allows client to delete an individual cookbook
+  PATCH request: allows client to change the either the title or recipes array
+   
+    (each cookbook has an array of recipe id which that cookbook contains)
 
-## Scripts
+4. /api/recipes/:recipe_id
+  GET request: allows client to recieve an individual recipe
 
-Start the application `npm start`
+##Screenshots of myCookbook App
 
-Start nodemon for the application `npm run dev`
+<img src="images/loginPage.png" width="100">
 
-Run the tests `npm test`
+<img src="images/landingPage.png" width="100">
 
-## Deploying
+<img src="images/cookbookPage.png" width="100">
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+<img src="images/recipePage.png" width="100">
+
+<img src="images/addForm.png" width="100">
+
+#Summary of Application
+This cookbook application allows users to search, create and organize recipes into multiple cookbooks. This will make organization for home cooks expontentially better. 
+
+Future Ideas:
+1. This application also has sights for catering to restaurants who rotate through different cookbooks/menus. 
+2. Allow rating of recipes/cookbook 
+
+#Technology used: 
+React 
+HTML
+JavaScript
+Node.js
+PostgresSQL
+Express
+CSS
