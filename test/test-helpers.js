@@ -25,10 +25,14 @@ function makeCookbookArray() {
     {
       id: 1, 
       title: 'Test 1',
+      recipes: [1, 2],
+      user_id: null
     },
     {
       id: 2, 
       title: 'Test 2',
+      recipes: [2],
+      user_id: null
     },
   ]
 }

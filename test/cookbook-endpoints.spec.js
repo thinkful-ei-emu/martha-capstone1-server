@@ -8,7 +8,6 @@ describe('Cookbook Endpoints', function () {
   const {
     testUsers,
     testCookbooks,
-    testRecipes,
   } = helpers.makeCookbookFixtures();
 
   before('make knex instance', () => {
@@ -87,12 +86,15 @@ describe('Cookbook Endpoints', function () {
         )
       );
 
-      it.skip('responds with 200 and whole list', () => {
+      it('responds with 200 and whole list', () => {
         const cookbookId=1;
-        const expectedCookbooks = {
-          id: 1, 
-          title: 'Test 1',
-        };
+
+        const expectedCookbooks =
+          [
+            {
+              recipes: [1, 2]
+            }
+          ];
         return supertest(app)
           .get(`/api/cookbooks/${cookbookId}`)
           .expect(200, expectedCookbooks);
@@ -126,21 +128,15 @@ describe('Cookbook Endpoints', function () {
       return db
         .into('cookbooks')
         .insert(testCookbooks)
-        .then(() => {
-          return db
-            .into('cookook_recipes')
-            .insert(testRecipes)
-        })
-    });
-    it.skip(`responds with 204 when updating field`, () => {
+      });
+    it(`responds with 204 when updating field`, () => {
       const idToUpdate = 2
       const updateCookbook = {
-        title: 'updated cookbook title',
+        recipes: [1, 2, 3],
       }
-      const expectedCookbook = {
-        ...testCookbooks[idToUpdate - 1],
+      const expectedCookbook = [{
         ...updateCookbook
-      }
+      }]
 
       return supertest(app)
         .patch(`/api/cookbooks/${idToUpdate}`)
